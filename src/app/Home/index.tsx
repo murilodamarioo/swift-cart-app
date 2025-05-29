@@ -37,6 +37,9 @@ export function Home() {
 
     await itemsStorage.add(newItem)
     await itemsByStatus()
+
+    setDescription('')
+    setFilter(FilterStatus.PENDING)
   }
 
   async function itemsByStatus() {
@@ -48,10 +51,19 @@ export function Home() {
     }
   }
 
+  async function handleRemoveItem(id: string) {
+    try {
+      await itemsStorage.remove(id)
+      await itemsByStatus()
+    } catch (error) {
+      Alert.alert('Remover', 'Não foi possível remover o item')
+    }
+  }
+
   useEffect(() => {
     itemsByStatus()
   }, [filter])
-  
+
   return (
     <View style={styles.container}>
       <Image source={require('@/assets/logo.png')} style={styles.logo}/>
@@ -60,6 +72,7 @@ export function Home() {
         <Input 
           onChangeText={setDescription}
           placeholder="O que você precisa comprar?"
+          value={description}
         />
         <Button title='Adicionar' onPress={handleAddItem}/>
       </View>
@@ -88,7 +101,7 @@ export function Home() {
           renderItem={({ item }) => (
             <Item
                 data={item}
-                onRemove={() => console.log('Remove item')}
+                onRemove={() => handleRemoveItem(item.id)}
                 onStatus={() => console.log('Change item status')}
             />
           )}
