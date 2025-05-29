@@ -1,8 +1,16 @@
-import { useState } from 'react'
-import { View, Image, TouchableOpacity, Text, FlatList, Alert } from 'react-native'
+import { useState, useEffect } from 'react'
+import { 
+  View, 
+  Image, 
+  TouchableOpacity, 
+  Text, 
+  FlatList, 
+  Alert 
+} from 'react-native'
 
 import { styles } from './styles'
 import { FilterStatus } from '@/types/FilterStatus'
+import { itemsStorage, ItemStorage } from '@/storage/itemStorage'
 
 import { Button } from '@/components/Button'
 import { Input } from '@/components/Input'
@@ -14,7 +22,7 @@ const FILTER_STATUS: FilterStatus[] = [FilterStatus.PENDING, FilterStatus.DONE]
 export function Home() {
   const [filter, setFilter] = useState<FilterStatus>(FILTER_STATUS[0])
   const [description, setDescription] = useState<string>('')
-  const [items, setItems] = useState<any>([])
+  const [items, setItems] = useState<ItemStorage[]>([])
 
   function handleAddItem() {
     if (!description.trim()) {
@@ -26,9 +34,20 @@ export function Home() {
       description,
       status: FilterStatus.PENDING,
     }
-
-    setItems((prevState) => [...prevState, newItem])
   }
+
+  async function getItems() {
+    try {
+      const response = await itemsStorage.get()
+      setItems(response)
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível filtrar os itens')
+    }
+  }
+
+  useEffect(() => {
+    getItems()
+  }, [filter])
 
   return (
     <View style={styles.container}>
