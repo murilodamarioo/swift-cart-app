@@ -2,6 +2,8 @@
 
 Swift Cart is a simple shopping list app built with React Native and Expo. It allows you to add, filter, mark as purchased, and remove items from your shopping list in a practical and intuitive way.
 
+![App Preview](./readme-app-image.PNG)
+
 ## ✨ Features
 
 - ✍️ **Add items**: Enter the product name and add it to your list.
