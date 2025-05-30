@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
     paddingTop: 62,
   },
   logo: {
-    width: 134,
-    height: 34,
+    width: 144,
+    height: 44,
   },
   form: {
     width: '100%',
